@@ -8,7 +8,7 @@ public class Main {
         NoteService noteService = new NoteService();
 
         Note newNote = new Note();
-        newNote.setTitle("Note!1");
+        newNote.setTitle("Note_1");
         newNote.setContent("some content");
         Note addedNote1 = noteService.add(newNote);
         System.out.println("Added new note: " + addedNote1);
