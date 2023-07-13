@@ -23,7 +23,7 @@ public class Main {
         note3.setTitle("Note_3");
         note3.setContent("the other content");
         Note addedNote3 = noteService.add(note3);
-        System.out.println("Added note 2: " + addedNote3);
+        System.out.println("Added note 3: " + addedNote3);
 
         System.out.println("All notes: " + noteService.listAll());
 
