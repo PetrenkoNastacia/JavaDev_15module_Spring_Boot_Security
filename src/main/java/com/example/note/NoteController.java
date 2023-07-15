@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.*;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/note")
@@ -36,10 +38,10 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public ModelAndView delete(@RequestParam("id") long id){
+    public ModelAndView delete(@RequestParam("id") long id) {
         noteService.deleteById(id);
         ModelAndView res = new ModelAndView("redirect:/note/list");
-        res.addObject("notes",noteService.listAll());
+        res.addObject("notes", noteService.listAll());
         return res;
     }
 
@@ -49,8 +51,10 @@ public class NoteController {
         res.addObject("note", noteService.getById(id));
         return res;
     }
-    @PostMapping("/edit")
-    public ModelAndView edit(@ModelAttribute("note") Note note) {
+
+    @PostMapping(value = "/edit", consumes = "application/x-www-form-urlencoded")
+    public ModelAndView editNote(@RequestParam Map<String, String> reqParams) {
+        Note note = new Note(Long.parseLong(reqParams.get("id")), reqParams.get("title"), reqParams.get("content"));
         noteService.edit(note);
         ModelAndView res = new ModelAndView("redirect:/note/list");
         res.addObject("notes", noteService.listAll());

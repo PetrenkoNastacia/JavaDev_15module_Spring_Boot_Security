@@ -9,17 +9,18 @@ public class NoteService {
 
     private  static final Map<Long, Note> notes = new HashMap<>();
 
-    public Note create(Note note) {
+    public void create(Note note) {
         long id = generateUniqueId();
         note.setId(id);
         notes.put(id, note);
-        return note;
     }
     public void edit(Note note){
         if(!notes.containsKey(note.getId())){
             throw new NoSuchElementException("Note with id " + note.getId() + " does not exist.");
         }else{
             notes.put(note.getId(), note);
+            note.setTitle(note.getTitle());
+            note.setContent(note.getContent());
         }
     }
 
