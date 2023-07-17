@@ -1,16 +1,18 @@
 package com.example.note;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Note {
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
     private String title;
+    @Column
     private String content;
-
-    public Note() {
-
-    }
 }

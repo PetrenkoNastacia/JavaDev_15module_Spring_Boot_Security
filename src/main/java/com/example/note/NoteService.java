@@ -1,54 +1,39 @@
 package com.example.note;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@RequiredArgsConstructor
 @Service
 public class NoteService {
 
-    private  static final Map<Long, Note> notes = new HashMap<>();
+    private final NoteRepository noteRepository;
 
     public void create(Note note) {
-        long id = generateUniqueId();
-        note.setId(id);
-        notes.put(id, note);
+        noteRepository.save(note);
     }
+
     public void edit(Note note){
-        if(!notes.containsKey(note.getId())){
-            throw new NoSuchElementException("Note with id " + note.getId() + " does not exist.");
-        }else{
-            notes.put(note.getId(), note);
-            note.setTitle(note.getTitle());
-            note.setContent(note.getContent());
-        }
+        getById(note.getId());
+        noteRepository.save(note);
     }
 
     public Note getById(long id) {
-        if (!notes.containsKey(id)) {
-            throw new NoSuchElementException("Note with id " + id + " doesn't exist.");
+        Optional<Note> optionalNote = noteRepository.findById(id);
+        if (optionalNote.isPresent()) {
+            return optionalNote.get();
         }
-        return notes.get(id);
+        throw new NoSuchElementException("Note with id " + id + " doesn't exist.");
     }
 
     public void deleteById(long id) {
-        if (!notes.containsKey(id)) {
-            throw new NoSuchElementException("Note with id " + id + " doesn't exist.");
-        }
-        notes.remove(id);
+        noteRepository.delete(getById(id));
     }
 
     public List<Note> listAll() {
-        return new ArrayList<>(notes.values());
-    }
-
-    private long generateUniqueId() {
-        Random random = new Random();
-        long id;
-        do {
-            id = random.nextLong();
-        } while (id < 0 || notes.containsKey(id));
-        return id;
+        return (List<Note>) noteRepository.findAll();
     }
 }
 

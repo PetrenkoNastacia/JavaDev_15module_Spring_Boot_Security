@@ -29,6 +29,7 @@ public class NoteController {
         res.addObject("note", new Note());
         return res;
     }
+
     @PostMapping("/create")
     public ModelAndView add(@ModelAttribute("note") Note note) {
         noteService.create(note);
@@ -53,7 +54,7 @@ public class NoteController {
     }
 
     @PostMapping(value = "/edit", consumes = "application/x-www-form-urlencoded")
-    public ModelAndView editNote(@RequestParam Map<String, String> reqParams) {
+    public ModelAndView edit(@RequestParam Map<String, String> reqParams) {
         Note note = new Note(Long.parseLong(reqParams.get("id")), reqParams.get("title"), reqParams.get("content"));
         noteService.edit(note);
         ModelAndView res = new ModelAndView("redirect:/note/list");
